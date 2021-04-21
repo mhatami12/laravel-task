@@ -1,4 +1,4 @@
-# laravel-exam
+# laravel-challenge
 
 * make a database seeder to populate the database (based on migrations) (transactions and webservices).
 * you need to pass all tests.
