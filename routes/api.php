@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/transactions', [TransactionsController::class, 'index']);
+
+Route::post('/transaction/pos',[TransactionsController::class,'store']);
+
+Route::post('/transaction/web', [TransactionsController::class,'store']);
+
+Route::post('/transaction/mobile', [TransactionsController::class, 'store']);

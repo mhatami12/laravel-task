@@ -13,11 +13,11 @@ class Webservices extends Migration
      */
     public function up()
     {
-        Schema::create('webservices', function (Blueprint $table) {
+        Schema::create('web_services', function (Blueprint $table) {
             $table->id();
             $table->integer('name');
             $table->timestamps();
-        });        
+        });
     }
 
     /**

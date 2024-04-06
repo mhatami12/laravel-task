@@ -15,11 +15,16 @@ class Transactions extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('webservice_id');
+            $table->foreignId('webservice_id')->nullable();
+            $table->foreign('webservice_id')
+                ->references('id')
+                ->on('web_services')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');;
             $table->integer('amount');
             $table->integer('type');//0:web,1:mobile,2:pos
             $table->timestamps();
-        });        
+        });
     }
 
     /**
