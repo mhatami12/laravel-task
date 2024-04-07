@@ -51,8 +51,7 @@ class TransactionsController extends BaseApiController
             Log::critical(
                 $exception->getMessage()
             );
-
-            throw $exception;
+            return $this->respondWithError('Transaction creation failed.',503);
         }
 
         $statusCode = $payload['type'] == 'mobile' ? 201 : 200;

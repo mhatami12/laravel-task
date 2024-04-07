@@ -3,7 +3,6 @@
 
 namespace App\Services;
 
-
 use App\Classes\Utils\Monetary;
 use App\Models\WebService;
 use App\Services\TransactionBuilder\Transaction;
@@ -37,20 +36,17 @@ class TransactionService
      */
     public function Transactions()
     {
-
         return DB::table('transactions')
             ->selectRaw('
-                (SELECT COUNT(*) FROM transactions WHERE amount BETWEEN 0 AND 4999) AS count_0_to_5000,
-                (SELECT COUNT(*) FROM transactions WHERE amount BETWEEN 5000 AND 9999) AS count_5000_to_10000,
-                (SELECT COUNT(*) FROM transactions WHERE amount BETWEEN 10000 AND 99999) AS count_10000_to_100000,
-                (SELECT COUNT(*) FROM transactions WHERE amount > 100000 ) AS count_10000_to_up,
-                (SELECT sum(amount) FROM transactions) AS amount,
-                (SELECT COUNT(*) FROM transactions WHERE type = 0 ) AS web_count,
-                (SELECT COUNT(*) FROM transactions WHERE type = 1 ) AS mobile_count,
-                (SELECT COUNT(*) FROM transactions WHERE type = 2 ) AS pos_count
-            ')
-            ->first();
-
+                   COUNT(CASE WHEN amount BETWEEN 0 AND 4999 THEN 1 END) AS count_0_to_5000,
+                   COUNT(CASE WHEN amount BETWEEN 5000 AND 9999 THEN 1 END) AS count_5000_to_10000,
+                   COUNT(CASE WHEN amount BETWEEN 10000 AND 99999 THEN 1 END) AS count_10000_to_100000,
+                   COUNT(CASE WHEN amount > 100000 THEN 1 END) AS count_10000_to_up,
+                   SUM(amount) AS amount,
+                   COUNT(CASE WHEN type = 0 THEN 1 END) AS web_count,
+                   COUNT(CASE WHEN type = 1 THEN 1 END) AS mobile_count,
+                   COUNT(CASE WHEN type = 2 THEN 1 END) AS pos_count
+            ')->first();
     }
 
     /**
@@ -83,6 +79,6 @@ class TransactionService
      */
     private function currentAmount($type, $amount)
     {
-        return in_array($type, ['web', 'mobile']) ? Monetary::convertToRial($amount) : (int) $amount;
+        return in_array($type, ['web', 'mobile']) ? Monetary::convertToRial($amount) : (int)$amount;
     }
 }
